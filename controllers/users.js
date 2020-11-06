@@ -7,7 +7,7 @@ module.exports.getUsers = (req, res) => {
   readFile(pathToData)
     .then((data) => res.send(data))
     .catch(() => {
-      res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+      res.status(500).send({ message: 'Внутренняя ошибка сервера' });
     });
 };
 
@@ -22,6 +22,6 @@ module.exports.getUser = (req, res) => {
       return res.send(user);
     })
     .catch(() => {
-      res.status(404).send({ message: 'Запрашиваемый ресурс не найден' });
+      res.status(500).send({ message: 'Внутренняя ошибка сервера' });
     });
 };
