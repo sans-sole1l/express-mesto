@@ -34,8 +34,13 @@ module.exports.likeCard = (req, res) => {
     { $addToSet: { likes: req.user._id } }, // добавить _id в массив, если его там нет
     { new: true },
   )
-    .then((card) => res.status(200).send(card))
-    .catch(() => res.status(500).send({ message: 'Внутренняя ошибка сервера' }));
+    .then((card) => {
+      if (card) {
+        return res.status(200).send(card);
+      }
+      return res.status(404).send({ message: 'Карточка не найдена' });
+    })
+    .catch(() => res.status(400).send({ message: 'Неверный запрос' }));
 };
 
 // удаление лайка карточки
@@ -45,6 +50,11 @@ module.exports.dislikeCard = (req, res) => {
     { $pull: { likes: req.user._id } }, // убрать _id из массива
     { new: true },
   )
-    .then((card) => res.status(200).send(card))
-    .catch(() => res.status(500).send({ message: 'Внутренняя ошибка сервера' }));
+    .then((card) => {
+      if (card) {
+        return res.status(200).send(card);
+      }
+      return res.status(404).send({ message: 'Карточка не найдена' });
+    })
+    .catch(() => res.status(400).send({ message: 'Неверный запрос' }));
 };
