@@ -23,7 +23,12 @@ module.exports.deleteCard = (req, res) => {
   const { cardId } = req.params;
 
   Card.deleteOne({ _id: cardId })
-    .then((card) => res.status(200).send(card))
+    .then((response) => {
+      if (response.deletedCount !== 0) {
+        return res.status(200).send({ message: 'Карточка удалена' });
+      }
+      return res.status(404).send({ message: 'Карточка не найдена' });
+    })
     .catch(() => res.status(404).send({ message: 'Карточка не найдена' }));
 };
 
